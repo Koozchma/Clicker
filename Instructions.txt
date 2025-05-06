@@ -1,0 +1,1 @@
+Create an index.html, a script.js, and style.css for this clicker game.
