@@ -1,0 +1,554 @@
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Align items to the top */
+    min-height: 100vh;
+    background-color: #f0f2f5;
+    padding: 20px 0; /* Add padding top and bottom */
+}
+
+/* Added outer container for positioning context */
+.game-outer-container {
+    position: relative; /* Needed for absolute positioning inside */
+    width: 90%;
+    max-width: 700px; /* Slightly wider */
+}
+
+.game-container {
+    background-color: #ffffff;
+    padding: 25px; /* Slightly reduced padding */
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 100%; /* Take full width of outer container */
+    position: relative; /* Context for effects container */
+    overflow: hidden; /* Hide potential overflow from effects */
+}
+
+/* Container for popups and lucky items */
+#effects-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Ignore clicks itself */
+    z-index: 10; /* On top */
+    overflow: hidden; /* Important */
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 15px; /* Reduced margin */
+    font-size: 1.8em; /* Slightly adjust size */
+}
+
+.score-display {
+    background-color: #e9ecef;
+    padding: 12px; /* Slightly reduced padding */
+    border-radius: 8px;
+    margin-bottom: 20px; /* Reduced margin */
+    position: relative; /* Keep above effects if needed, though effects are behind text */
+    z-index: 1;
+}
+
+.score-display h2 {
+    font-size: 1.8em; /* Slightly smaller */
+    color: #007bff;
+    margin-bottom: 5px;
+}
+
+.score-display p {
+    font-size: 0.9em;
+    color: #555;
+}
+
+#score,
+#score-per-second,
+#score-per-click {
+    font-weight: bold;
+}
+
+/* --- Click Area & Button --- */
+.click-area {
+    margin-bottom: 25px; /* Reduced margin */
+    position: relative; /* Positioning context for click popups */
+    z-index: 1; /* Ensure button is clickable above effects container */
+}
+
+#clicker-button {
+    padding: 18px 35px; /* Slightly adjusted padding */
+    font-size: 1.4em; /* Slightly smaller */
+    cursor: pointer;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    /* Added transition for hover effect */
+    transition: background-color 0.2s ease, transform 0.15s ease-in-out;
+    position: relative; /* Ensure button content is above pseudo-elements if used */
+    z-index: 2;
+}
+
+/* Hover animation */
+#clicker-button:hover {
+    background-color: #218838;
+    transform: scale(1.03); /* Subtle grow */
+}
+
+#clicker-button:active {
+    background-color: #1e7e34;
+    transform: scale(0.98); /* Existing press down */
+}
+
+/* --- Click Number Pop-up --- */
+.click-popup {
+    position: absolute;
+    bottom: 50%; /* Start near the button center */
+    left: 50%;
+    transform: translateX(-50%); /* Center horizontally initially */
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #28a745; /* Green color */
+    user-select: none; /* Prevent text selection */
+    pointer-events: none; /* Ignore clicks */
+    white-space: nowrap; /* Prevent wrapping */
+    animation: popupFadeUp 1s ease-out forwards;
+    z-index: 11; /* Above effects container background but potentially below other UI */
+}
+
+@keyframes popupFadeUp {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, 0); /* Centered horizontally, initial vertical */
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -60px); /* Move up and fade out */
+    }
+}
+
+/* --- Upgrades --- */
+.upgrades-container {
+    margin-top: 20px;
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+    position: relative; /* Keep above effects */
+    z-index: 1;
+}
+
+.upgrades-container h2 {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+/* Style for grouping upgrade types */
+.upgrade-category {
+    margin-bottom: 25px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border: 1px solid #eee;
+    border-radius: 8px;
+}
+
+.upgrade-category h3 {
+    color: #0056b3;
+    margin-bottom: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+}
+
+/* Styling for individual upgrade boxes (non-generator ones) */
+.upgrade {
+    background-color: #ffffff; /* White background for individual upgrades */
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.upgrade:last-child {
+    margin-bottom: 0; /* Remove margin from last upgrade in category */
+}
+
+.upgrade h4 { /* Changed from h3 for better hierarchy */
+    color: #495057;
+    margin-bottom: 8px;
+}
+
+.upgrade p {
+    color: #6c757d;
+    margin-bottom: 5px;
+    font-size: 0.9em;
+    line-height: 1.4; /* Improve readability */
+}
+
+/* Target cost paragraph within general .upgrade divs */
+.upgrade > p:last-of-type {
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #333; /* Make cost more prominent */
+}
+
+.upgrade button {
+    padding: 8px 15px;
+    font-size: 0.9em;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.2s ease;
+    align-self: flex-end;
+    margin-top: auto;
+    position: relative;
+    overflow: hidden; /* Needed for potential pseudo-element flash */
+    transform-origin: center center; /* Helps shake look better */
+}
+
+.upgrade button:hover {
+    background-color: #0056b3;
+}
+
+.upgrade button:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+}
+
+/* --- Purchase Flash Animation --- */
+.purchase-flash {
+    animation: flashBg 0.4s ease-out;
+}
+
+@keyframes flashBg {
+    0% { background-color: #007bff; } /* Start color */
+    50% { background-color: #ffc107; } /* Flash color (yellow) */
+    100% { background-color: #007bff; } /* End color */
+}
+
+/* Disabled buttons shouldn't flash */
+.upgrade button:disabled.purchase-flash {
+    animation: none;
+}
+
+/* --- Shake Animation --- */
+@keyframes shake {
+  10%, 90% { transform: translateX(-1px); }
+  20%, 80% { transform: translateX(2px); }
+  30%, 50%, 70% { transform: translateX(-3px); }
+  40%, 60% { transform: translateX(3px); }
+}
+
+
+/* --- Generator Dropdown Area --- */
+.generator-select-area {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* Space between label and select */
+}
+
+.generator-select-area label {
+    font-weight: bold;
+    color: #495057;
+}
+
+#generator-select {
+    padding: 8px 10px;
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    font-size: 0.95em;
+    min-width: 200px; /* Give it some width */
+    cursor: pointer;
+}
+
+/* Specific styling for the selected generator info box */
+.selected-generator-info {
+    /* Reuses the .upgrade class styles by having both classes */
+    background-color: #e9ecef; /* Slightly different background */
+    border-color: #adb5bd;
+}
+/* Target cost paragraph specifically inside the selected info box */
+.selected-generator-info > p:last-of-type {
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #333;
+}
+
+
+/* --- Lucky Planet Item --- */
+.lucky-planet {
+    position: absolute;
+    width: 50px; /* Adjust size as needed */
+    height: 50px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+    pointer-events: all; /* Allow clicks on the planet itself */
+    z-index: 12; /* Ensure it's above popups */
+    transition: transform 0.2s ease-out, opacity 0.3s ease-out;
+    opacity: 0; /* Start hidden */
+    animation: fadeInGrow 0.5s ease-out forwards; /* Fade and maybe grow in */
+}
+
+@keyframes fadeInGrow {
+     0% { opacity: 0; transform: scale(0.5); }
+    100% { opacity: 1; transform: scale(1.0); }
+}
+
+
+.lucky-planet:hover {
+    transform: scale(1.15); /* Grow slightly more on hover */
+    filter: brightness(1.1); /* Make it slightly brighter */
+}
+
+/* Class for when planet is clicked/fading out */
+.lucky-planet-collected {
+    animation: fadeOutShrink 0.3s ease-out forwards;
+    pointer-events: none; /* Disable further interaction */
+}
+
+@keyframes fadeOutShrink {
+    0% { opacity: 1; transform: scale(1.0); }
+    100% { opacity: 0; transform: scale(0.3); }
+}
+
+/* --- Manual Power Dropdown Area --- */
+.manual-select-area { /* Similar to generator select */
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.manual-select-area label {
+    font-weight: bold;
+    color: #495057;
+}
+
+#manual-select { /* Similar to generator select */
+    padding: 8px 10px;
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    font-size: 0.95em;
+    min-width: 200px;
+    cursor: pointer;
+}
+
+.selected-manual-info { /* Similar to selected generator */
+    background-color: #f0f8ff; /* Light blue perhaps */
+    border-color: #b0c4de;
+}
+
+/* Spans inside selected manual info */
+#selected-manual-effect,
+#selected-manual-cost {
+     font-weight: bold;
+     color: #dc3545;
+}
+#selected-manual-description { /* Style for description text */
+    font-style: italic;
+    margin-bottom: 8px !important; /* Ensure spacing */
+    color: #6c757d;
+}
+
+
+/* --- Generator Info Area with Optimization --- */
+.selected-generator-info p { /* Adjust spacing if needed */
+    margin-bottom: 6px;
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-around; /* Space out Buy and Optimize */
+    margin-top: 15px;
+    gap: 15px; /* Add gap between the two action items */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.action-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center cost and button */
+    flex-basis: 45%; /* Try to keep them side-by-side */
+    min-width: 120px; /* Prevent excessive squishing */
+}
+
+.action-item p { /* Style the cost text within the action item */
+    margin-bottom: 5px !important; /* Reduce margin */
+    font-weight: bold;
+    color: #333;
+    font-size: 0.9em;
+}
+
+.action-item button {
+    width: 100%; /* Make buttons fill their container */
+    align-self: center; /* Override align-self: flex-end from .upgrade button */
+}
+
+/* --- ADD THESE STYLES FOR GAMBLING FEATURES --- */
+
+/* Shard/Pod Display */
+.small-button {
+    padding: 3px 8px;
+    font-size: 0.8em;
+    margin-left: 10px;
+    vertical-align: middle; /* Align better with text */
+}
+
+.boost-active {
+    color: #28a745; /* Green */
+    font-weight: bold;
+    margin-top: 5px;
+    font-size: 0.9em;
+}
+
+/* Casino Access Button */
+.casino-access {
+    margin-bottom: 20px;
+}
+.action-button { /* Shared style for major action buttons */
+    padding: 10px 20px;
+    font-size: 1.1em;
+    cursor: pointer;
+    background-color: #6f42c1; /* Purple */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+.action-button:hover {
+    background-color: #5a379e;
+}
+.action-button:active {
+    transform: scale(0.98);
+}
+.action-button:disabled {
+     background-color: #6c757d;
+     cursor: not-allowed;
+     transform: none; /* Prevent scale effect on disabled */
+}
+
+/* Casino Modal */
+.modal {
+  /* display: none; /* Controlled by JS */
+  position: fixed;
+  z-index: 20;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 30px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 500px;
+  border-radius: 10px;
+  position: relative;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.modal-content h2 {
+    margin-bottom: 20px;
+    color: #6f42c1; /* Match button */
+}
+
+.modal-content p {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.close-button {
+  color: #aaa;
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#spin-button {
+    margin-top: 15px;
+}
+
+#casino-result {
+    margin-top: 20px;
+    font-style: italic;
+    min-height: 1.2em; /* Ensure space even when empty */
+    color: #555;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    border: 1px solid #eee;
+}
+
+/* Casino Upgrade Section */
+/* Uses existing .upgrade-category and .upgrade styles */
+/* Special note for cost styling */
+#buy-luck-enhancer + p { /* Target the cost paragraph specifically if needed */
+     /* e.g., color: purple; */
+}
+#buy-luck-enhancer:disabled {
+     /* Inherits general disabled style */
+}
+
+/* Specific spans for optimization */
+#selected-generator-optimize-level,
+#selected-generator-optimize-boost,
+#selected-generator-optimize-cost {
+    font-weight: bold;
+    color: #dc3545;
+}
+
+/* Span elements for dynamic values - CORRECTED */
+#score,
+#score-per-second,
+#score-per-click,
+#click-button-value,
+#selected-manual-effect,        /* ADDED */
+#selected-manual-cost,         /* ADDED */
+#selected-generator-rate,
+#selected-generator-level,
+#selected-generator-cost,
+#selected-generator-optimize-level, /* ADDED */
+#selected-generator-optimize-boost, /* ADDED */
+#selected-generator-optimize-cost,  /* ADDED */
+#global-multiplier-level,
+#global-multiplier-cost
+ {
+    font-weight: bold;
+    color: #dc3545; /* Make dynamic numbers stand out */
+}

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clicker Empire - Optimized</title> <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-outer-container">
+        <div class="game-container">
+            <div id="effects-container"></div>
+            <h1>Clicker Empire - Optimized</h1> <div class="score-display">
+                <h2>Score: <span id="score">0</span></h2>
+                <p>
+                    <span id="score-per-second">0</span> per second /
+                    <span id="score-per-click">1</span> per click
+                </p>
+                <p style="font-size: 0.8em; margin-top: 5px;">
+                    Shards: <span id="quantum-shards">0</span> /
+                    Pods: <span id="space-pods">0</span>
+                    <button id="open-pod-button" class="small-button" disabled>Open Pod</button>
+                </p>
+                <p id="boost-display" class="boost-active" style="display: none; color: green; font-weight: bold; margin-top: 5px;">Boost Active!</p>
+            </div>
+
+            <div class="click-area" id="click-area">
+                <button id="clicker-button">Click Me! (+<span id="click-button-value">1</span>)</button>
+            </div>
+            <div class="casino-access" style="margin-bottom: 20px;">
+                 <button id="casino-button" class="action-button">Visit Galactic Casino</button>
+             </div>
+            <div class="upgrades-container">
+                <h2>Upgrades</h2>
+
+                <div class="upgrade-category">
+                    <h3>Manual Power</h3>
+                    <div class="manual-select-area"> <label for="manual-select">Select Upgrade:</label>
+                        <select id="manual-select" name="manual-upgrades"></select>
+                    </div>
+                    <div class="selected-manual-info upgrade"> <p id="selected-manual-description">Select an upgrade.</p>
+                        <p>Current Effect: <span id="selected-manual-effect">_</span></p>
+                        <p>Cost: <span id="selected-manual-cost">_</span></p>
+                        <button id="buy-selected-manual" disabled>Buy</button>
+                     </div>
+                </div>
+                 <div class="upgrade-category">
+                     <h3>Casino Tech</h3>
+                      <div class="upgrade">
+                         <h4>Cybernetic Luck Enhancer</h4>
+                         <p>Slightly improves odds on Casino spins.</p>
+                         <p>Current Level: <span id="luck-enhancer-level">0</span></p>
+                         <p>Upgrade Cost: <span id="luck-enhancer-cost">_</span> Shards</p> <button id="buy-luck-enhancer" disabled>Enhance Luck</button>
+                     </div>
+                     </div>
+                <div class="upgrade-category">
+                    <h3>Auto Generators</h3>
+                    <div class="generator-select-area">
+                        <label for="generator-select">Select Generator:</label>
+                        <select id="generator-select" name="generators"></select>
+                    </div>
+                    <div class="selected-generator-info upgrade">
+                        <p>Generates <span id="selected-generator-rate">_</span> score/sec each.</p>
+                        <p>Owned: <span id="selected-generator-level">_</span></p>
+                        <p>Optimization: Lvl <span id="selected-generator-optimize-level">_</span> (+<span id="selected-generator-optimize-boost">_</span>%)</p>
+                        <div class="button-group"> <div class="action-item">
+                                <p>Cost: <span id="selected-generator-cost">_</span></p>
+                                <button id="buy-selected-generator" disabled>Buy Unit</button>
+                            </div>
+                            <div class="action-item">
+                                 <p>Optimize Cost: <span id="selected-generator-optimize-cost">_</span></p>
+                                 <button id="optimize-selected-generator" disabled>Optimize (+10%)</button> </div>
+                        </div>
+                     </div>
+                </div>
+
+                 <div class="upgrade-category">
+                    <h3>Global Boosts</h3>
+                     <div class="upgrade">
+                        <h4>Efficiency Training</h4>
+                        <p>Boosts ALL score per second production by 10%.</p>
+                        <p>Current Boost: +<span id="global-multiplier-level">0</span>%</p>
+                        <p>Cost: <span id="global-multiplier-cost">1000</span></p>
+                        <button id="buy-global-multiplier">Buy (+10%)</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div id="casino-modal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <span class="close-button" id="close-casino-button">&times;</span>
+                <h2>Galactic Casino</h2>
+                <p>Cost per Spin: <span id="casino-spin-cost-display">_</span> Score</p>
+                <p>Your Shards: <span id="casino-shards-display">_</span></p>
+                <button id="spin-button" class="action-button">Spin!</button>
+                <div id="casino-result" style="margin-top: 15px; font-style: italic; min-height: 1.2em;">Spin the Quantum Reels!</div>
+            </div>
+        </div>
+    </div> <script src="script.js"></script>
+</body>
+</html>
